@@ -6,6 +6,6 @@ namespace CustomerApi.Service.v1.Query
 {
     public class GetCustomerByIdQuery : IRequest<Customer>
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

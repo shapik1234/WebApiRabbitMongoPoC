@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CustomerApi.Data.Entities;
+﻿using CustomerApi.Data.Entities;
 
 namespace CustomerApi.Data.Repository.v1
 {
-    public interface ICustomerRepository: IRepository<Customer>
+    public interface ICustomerRepository : IMongoRepository<Customer>
     {
-        Task<Customer> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

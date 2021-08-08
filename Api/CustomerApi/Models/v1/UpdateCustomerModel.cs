@@ -6,7 +6,7 @@ namespace CustomerApi.Models.v1
     public class UpdateCustomerModel
     {
         [Required]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public string FirstName { get; set; }

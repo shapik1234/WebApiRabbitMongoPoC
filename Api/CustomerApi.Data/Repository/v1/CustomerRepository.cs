@@ -1,21 +1,13 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CustomerApi.Data.Database;
+﻿using CustomerApi.Data.Database;
 using CustomerApi.Data.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace CustomerApi.Data.Repository.v1
 {
-    public class CustomerRepository : Repository<Customer>, ICustomerRepository
+    public class CustomerRepository : MongoRepository<Customer>, ICustomerRepository
     {
-        public CustomerRepository(CustomerContext customerContext) : base(customerContext)
+        public CustomerRepository(CustomerContext customerContext) 
+            : base(customerContext)
         {
-        }
-
-        public async Task<Customer> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken)
-        {
-            return await CustomerContext.Customer.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-        }
+        }      
     }
 }

@@ -1,5 +1,8 @@
+using CustomerApi.Data;
 using CustomerApi.Data.Database;
 using CustomerApi.Data.Entities;
+using CustomerApi.Data.Options;
+using CustomerApi.Data.Repository.v1;
 using CustomerApi.Messaging.Send.Options.v1;
 using CustomerApi.Messaging.Send.Sender.v1;
 using CustomerApi.Service.v1.Command;
@@ -14,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -38,11 +42,8 @@ namespace CustomerApi
 		{
 			services.AddHealthChecks();
 			services.AddOptions();
-
-			var serviceClientSettingsConfig = Configuration.GetSection("RabbitMq");
-			services.Configure<RabbitMqConfiguration>(serviceClientSettingsConfig);
-			services.AddAutoMapper(typeof(Startup));
 			services.AddMvc();
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo
@@ -79,15 +80,20 @@ namespace CustomerApi
 				};
 			});
 
-			services.AddMediatR(Assembly.GetExecutingAssembly());
+			services.AddAutoMapper(typeof(Startup));
+			services.Configure<RabbitMqConfiguration>(Configuration.GetSection(nameof(RabbitMqConfiguration)));
 
 			bool.TryParse(Configuration["BaseServiceSettings:UserabbitMq"], out var useRabbitMq);
-
 			if (useRabbitMq)
 			{
 				services.AddSingleton<ICustomerUpdateSender, CustomerUpdateSender>();
 			}
 
+			services.Configure<MongoDatabaseConfiguration>(Configuration.GetSection(nameof(MongoDatabaseConfiguration)));
+			services.AddSingleton(typeof(CustomerContext));
+			services.AddSingleton<ICustomerRepository, CustomerRepository>();
+
+			services.AddMediatR(Assembly.GetExecutingAssembly());
 			services.AddTransient<IRequestHandler<CreateCustomerCommand, Customer>, CreateCustomerCommandHandler>();
 			services.AddTransient<IRequestHandler<UpdateCustomerCommand, Customer>, UpdateCustomerCommandHandler>();
 			services.AddTransient<IRequestHandler<GetCustomerByIdQuery, Customer>, GetCustomerByIdQueryHandler>();

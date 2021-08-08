@@ -17,7 +17,7 @@ namespace CustomerApi.Service.v1.Query
 
         public async Task<Customer> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _customerRepository.GetCustomerByIdAsync(request.Id, cancellationToken);
+            return await _customerRepository.GetById(request.Id, cancellationToken);
         }
     }
 }
