@@ -61,9 +61,6 @@ namespace TestCoreService.Client
 
 							services.AddSingleton((ILogger)serilizeLogger);
 							services.AddSingleton<ILoggerHandler, LoggerHandler>();
-							services.AddSingleton<IServiceSettings<IHandlingParameters>, ServiceSettings>();							
-							services.AddSingleton<IServiceInformation, ServiceInformation>();
-							services.AddSingleton<IHandlingParameters, HandlingParameters>();
 							services.AddScoped<IWindowsService, ServiceInstance>();})
 						.UseSerilog()
 						.Build(); 

@@ -1,8 +1,5 @@
-﻿using Serilog;
-using ServicesShared.Core;
+﻿using ServicesShared.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace TestCoreService.Client.Implementation.Handlers
@@ -11,12 +8,10 @@ namespace TestCoreService.Client.Implementation.Handlers
     {
         protected BaseHandler(
             CancellationTokenSource cancellationToken,
-            ILoggerHandler log,
-            IHandlingParameters handlingParameters)
+            ILoggerHandler log)
         {
             Log = log;
             CancellationToken = cancellationToken;
-            HandlingParameters = handlingParameters;
         }
 
         #region Properties
@@ -30,12 +25,6 @@ namespace TestCoreService.Client.Implementation.Handlers
         /// Gets a logging instance.
         /// </summary>
         protected ILoggerHandler Log;
-
-
-        /// <summary>
-        /// Gets a parameters that allows to manage communication with DataService.
-        /// </summary>
-        protected IHandlingParameters HandlingParameters { get; }
 
         #endregion
 

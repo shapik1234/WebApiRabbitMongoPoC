@@ -11,9 +11,8 @@ namespace TestCoreService.Client.Implementation.Handlers
 		public QueryMessagesHandler(
 		   CancellationTokenSource cancellationToken,
 		   ILoggerHandler log,
-		   IHandlingParameters handlingParameters,
 		   ICustomerListener customerMessagingListener)
-			: base(cancellationToken, log, handlingParameters)
+			: base(cancellationToken, log)
 		{
 			this.customerListener = customerMessagingListener;
 		}

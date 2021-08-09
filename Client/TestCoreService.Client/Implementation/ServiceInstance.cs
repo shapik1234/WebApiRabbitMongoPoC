@@ -12,12 +12,10 @@ namespace TestCoreService.Client
     public class ServiceInstance : IWindowsService
     {
         private CancellationTokenSource cancellationToken;
-        private readonly IHandlingParameters handlingParameters;
         private readonly ICustomerListener customerListener;
 
-        public ServiceInstance(IHandlingParameters handlingParameters, ICustomerListener customerListener, ILoggerHandler log)
+        public ServiceInstance(ICustomerListener customerListener, ILoggerHandler log)
         {            
-            this.handlingParameters = handlingParameters;
             this.Log = log;
             this.customerListener = customerListener;
         }
@@ -53,7 +51,7 @@ namespace TestCoreService.Client
             {           
                 Task.Factory
                     .StartNew(
-                        new QueryMessagesHandler(cancellationToken, Log, handlingParameters, customerListener).Start,
+                        new QueryMessagesHandler(cancellationToken, Log, customerListener).Start,
                         TaskCreationOptions.LongRunning);
             }
             catch (OperationCanceledException)
