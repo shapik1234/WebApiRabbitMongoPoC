@@ -22,6 +22,54 @@
 				"url": null
 			},
 			"response": []
+		},
+		{
+			"name": "Customer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2Mjg1MTg5OTEsImV4cCI6MTYyOTEyMzc5MSwiaWF0IjoxNjI4NTE4OTkxfQ.VL7PUThPIbgNVxNMCNPw9rCeU6zB0gzKW-iZkbaVbag",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"string\",\r\n  \"firstName\": \"string\",\r\n  \"lastName\": \"string\",\r\n  \"birthday\": \"2021-08-09T14:24:05.971Z\",\r\n  \"age\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44330/v1/customer",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44330",
+					"path": [
+						"v1",
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": null
+			},
+			"response": []
 		}
 	]
 }

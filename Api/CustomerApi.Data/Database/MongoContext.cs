@@ -9,14 +9,8 @@ namespace CustomerApi.Data.Database
 	{
 		public MongoContext(IOptions<MongoDatabaseConfiguration> settings)
 		{
-			if (settings == null || settings.Value.ConnectionString == null || settings.Value.ConnectionString.Length == 0
-				|| settings.Value.DatabaseName == null || settings.Value.DatabaseName.Length == 0)
-			{
-				//throw new ArgumentNullException(nameof(settings));
-			}
-
-			//Client = new MongoClient(settings.Value.ConnectionString);
-			//Database = Client.GetDatabase(settings.Value.DatabaseName);			
+			Client = new MongoClient(settings.Value.ConnectionString);
+			Database = Client.GetDatabase(settings.Value.DatabaseName);			
 		}
 
 		protected IMongoClient Client {get; set;}

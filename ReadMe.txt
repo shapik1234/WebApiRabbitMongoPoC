@@ -8,7 +8,7 @@ docker run -d --hostname my-rabbit --name rabbit-name  -p 15672:15672 -p 5672:56
     "UserName": "guest",
     "Password": "guest"
  	}
-2. Intall and setup MongoDatabase and make preparations.
+2. Intall and setup MongoDatabase and make preparations.(docker). Using bash(docker exec -it geeksarray-mongo /bin/bash) create db and collection.
 3. Buid WinApi and Client to ensure communication.
 4. Run docker rabbitmq - image.
 	

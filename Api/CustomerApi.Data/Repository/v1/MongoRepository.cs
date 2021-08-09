@@ -15,8 +15,8 @@ namespace CustomerApi.Data.Repository.v1
         private IMongoCollection<TEntity> collection;
         public MongoRepository(IMongoContext<TEntity> context)
         {
-            //mongoContext = context;
-            //collection = context.GetCollection<TEntity>();
+            mongoContext = context;
+            collection = context.GetCollection<TEntity>();
         }       
 
         public async Task<List<TEntity>> Get(CancellationToken cancellationToken = default)

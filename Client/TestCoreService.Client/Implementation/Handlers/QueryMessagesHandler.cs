@@ -23,13 +23,13 @@ namespace TestCoreService.Client.Implementation.Handlers
 			try
 			{
 				IError error = null;
-				Log.Information("Message Query Handler Client is working...");
+				Log.Information("Message Query Handler is working...");
 
 				customerListener.Listen(m => Log.Information(m));
 				do
 				{
 					var now = DateTime.Now;
-					Idle(now, now, 2, nameof(QueryMessagesHandler));
+					//Idle(now, now, 2, nameof(QueryMessagesHandler));
 				} while (!CancellationToken.IsCancellationRequested);
 			}
 			catch (OperationCanceledException)
