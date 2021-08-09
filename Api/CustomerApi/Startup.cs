@@ -135,6 +135,9 @@ namespace CustomerApi
 			{
 				endpoints.MapControllers();
 				endpoints.MapHealthChecks("/health");
+				endpoints.MapControllerRoute(
+				   name: "default",
+				   pattern: "{controller=Home}/{action=Index}/{id?}");
 			});
 		}
 	}

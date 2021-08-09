@@ -1,4 +1,5 @@
-﻿using ServicesShared.Core;
+﻿using Serilog;
+using ServicesShared.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,15 +11,11 @@ namespace TestCoreService.Client.Implementation.Handlers
     {
         protected BaseHandler(
             CancellationTokenSource cancellationToken,
-            ILogging log,
-            ITimeProvider timeProvider,
-            IConnectionSettings connectionSettings,
+            ILoggerHandler log,
             IHandlingParameters handlingParameters)
         {
-            CancellationToken = cancellationToken;
             Log = log;
-            TimeProvider = timeProvider;
-            ConnectionSettings = connectionSettings;
+            CancellationToken = cancellationToken;
             HandlingParameters = handlingParameters;
         }
 
@@ -32,17 +29,8 @@ namespace TestCoreService.Client.Implementation.Handlers
         /// <summary>
         /// Gets a logging instance.
         /// </summary>
-        protected ILogging Log { get; }
+        protected ILoggerHandler Log;
 
-        /// <summary>
-        /// Gets an interface that provides date/time.
-        /// </summary>
-        protected ITimeProvider TimeProvider { get; }
-
-        /// <summary>
-        /// Gets a connection settings to database.
-        /// </summary>
-        protected IConnectionSettings ConnectionSettings { get; }
 
         /// <summary>
         /// Gets a parameters that allows to manage communication with DataService.
@@ -52,30 +40,18 @@ namespace TestCoreService.Client.Implementation.Handlers
         #endregion
 
         public abstract void Start();
-
-        protected void HandleFailedRequest(IError error)
-        {
-            string message =
-                new StringBuilder()
-                    .AppendLine($"Date: {TimeProvider.Now:MM/dd/yyyy hh:mm:ss}")
-                    .AppendLine("Status: Error")
-                    .AppendLine($"Description: {error.Title}")
-                    .AppendLine($"Details: {error.Description}")
-                    .ToString();
-
-            Log.HandleError($"{Environment.NewLine}{message}");
-        }
+       
 
         protected void Idle(DateTime started, DateTime now, int duration, string kindOfProcess)
         {
-            Log.HandleDebug($"{kindOfProcess}s processing ended at {now:HH:mm:ss}");
+            Log.Debug($"{kindOfProcess}s processing ended at {now:HH:mm:ss}");
 
             DateTime nextIteration = now.AddMinutes(duration);
             TimeSpan timeDifference = nextIteration - now;
 
             if (timeDifference.TotalMilliseconds > 0)
             {
-                Log.HandleDebug(
+                Log.Debug(
                     string.Format(
                         "Next iteration will start in {0:D2}:{1:D2}:{2:D2} {3:MM/dd/yyyy}",
                         timeDifference.Days * 24 + timeDifference.Hours,

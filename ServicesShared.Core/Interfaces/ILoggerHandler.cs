@@ -2,36 +2,36 @@
 
 namespace ServicesShared.Core
 {
-	public interface ILogging
+	public interface ILoggerHandler
 	{
         /// <summary>
         /// Handles an error as message.
         /// </summary>
         /// <param name="message">The message.</param>
-        void HandleError(string message);
+        void Error(string message);
 
         /// <summary>
         /// Handles an error as <see cref="IError" />.
         /// </summary>
         /// <param name="error">The error.</param>
-        void HandleError(IError error);
+        void Error(IError error);
 
         /// <summary>
         /// Handles an error as <see cref="Exception" />.
         /// </summary>
         /// <param name="exception">The exception.</param>
-        void HandleError(Exception exception);
+        void Error(Exception exception);
 
         /// <summary>
         /// Handles debug information.
         /// </summary>
         /// <param name="message">The message.</param>
-        void HandleDebug(string message);
+        void Debug(string message);
 
         /// <summary>
         /// Handles custom information.
         /// </summary>
         /// <param name="message">The message.</param>
-        void HandleInfo(string message);
+        void Information(string message);
     }
 }

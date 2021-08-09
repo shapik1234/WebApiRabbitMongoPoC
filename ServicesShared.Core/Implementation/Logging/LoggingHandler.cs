@@ -1,48 +1,47 @@
-﻿using Microsoft.Extensions.Logging;
-using ServicesShared.Core.Extensions;
+﻿using Serilog;
 using System;
 
 namespace ServicesShared.Core
 {
-    public class LoggingHandler<T> : ILogging
+    public class LoggerHandler : ILoggerHandler
     {
-        private ILogger<T> logger;
-        public LoggingHandler(ILogger<T> log)
+        private ILogger logger;
+        public LoggerHandler(ILogger logger)
         {
-            logger = log;
+            this.logger = logger;
         }
                
 
         #region ILogging implementation
 
         /// <inheritdoc />
-        public void HandleError(string message)
+        public void Error(string message)
         {
-            logger.LogError(message);
+            logger.Error(message);
         }
 
         /// <inheritdoc />
-        public void HandleError(IError error)
+        public void Error(IError error)
         {
-            logger.LogError($"{Environment.NewLine}{error}");
+            logger.Error($"{Environment.NewLine}{error}");
         }
 
         /// <inheritdoc />
-        public void HandleError(Exception exception)
+        public void Error(Exception exception)
         {
-            logger.LogError($"{Environment.NewLine}{exception.RenderDetails()}");
+            logger.Error($"{Environment.NewLine}{exception.RenderDetails()}");
         }
 
         /// <inheritdoc />
-        public void HandleDebug(string message)
+        public void Debug(string message)
         {
-            logger.LogDebug(message);
+            logger.Debug(message);
         }
 
         /// <inheritdoc />
-        public void HandleInfo(string message)
+        public void Information(string message)
         {
-            logger.LogInformation(message);
+            logger.Information(message);
         }
 
         #endregion
