@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CustomerApi.Authentication.Attributes.v1;
-using CustomerApi.Authentication.Models.v1;
 using CustomerApi.Data.Entities;
 using CustomerApi.Models.v1;
 using CustomerApi.Service.v1.Command;
@@ -26,36 +25,7 @@ namespace CustomerApi.Controllers.v1
         {
             this.mapper = mapper;
             this.mediator = mediator;
-        }
-
-        /// <summary>
-        /// Action to get Jwt token.
-        /// </summary>
-        /// <returns>Authenticate user to get access to Customer API</returns>
-        /// <response code="200">Retuned if authentification is done</response>
-        /// <response code="400">Returned if the authentification couldn't be completed</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestModel model)
-        {
-            try
-            {
-				AuthenticateResponseModel response = await mediator.Send(new AuthenticateUserCommand()
-                {
-                    AuthenticateRequest = model
-                });
-
-				if (response == null)
-					return BadRequest(new { message = "Username or password is incorrect" });
-				else
-					return Ok(response);
-			}
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }        
-        }
+        }        
 
         /// <summary>
         /// Action to see all existing customers.

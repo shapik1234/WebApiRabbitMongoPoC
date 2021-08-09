@@ -1,4 +1,4 @@
-﻿using CustomerApi.Messaging.Send.Listener.v1;
+﻿using Service.Messaging.Listener.Listener.v1;
 using ServicesShared.Core;
 using System;
 using System.Threading;

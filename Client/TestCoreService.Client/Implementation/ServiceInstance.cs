@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using CustomerApi.Messaging.Send.Listener.v1;
+using Service.Messaging.Listener.Listener.v1;
 using ServicesShared.Core;
 using TestCoreService.Client.Implementation.Handlers;
 

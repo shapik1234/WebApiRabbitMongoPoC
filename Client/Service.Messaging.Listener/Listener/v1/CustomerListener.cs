@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Text;
-using CustomerApi.Data.Entities;
-using CustomerApi.Messaging.Send.Options.v1;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Service.Messaging.Listener.Options.v1;
 
-namespace CustomerApi.Messaging.Send.Listener.v1
+namespace Service.Messaging.Listener.Listener.v1
 {
     public class CustomerListener : ICustomerListener
     {

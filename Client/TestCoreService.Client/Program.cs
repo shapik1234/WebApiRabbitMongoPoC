@@ -1,12 +1,11 @@
-﻿using CustomerApi.Messaging.Send.Listener.v1;
-using CustomerApi.Messaging.Send.Options.v1;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Service.Messaging.Listener.Listener.v1;
+using Service.Messaging.Listener.Options.v1;
 using ServicesShared.Core;
 using System;
-using System.Configuration;
 using System.IO;
 
 namespace TestCoreService.Client
@@ -46,7 +45,6 @@ namespace TestCoreService.Client
 							.WriteTo.Console()
 							.CreateLogger(); 
 
-			//Log.Logger.Information("Application Starting");
 
 			var host = Host.CreateDefaultBuilder() 
 						.ConfigureServices((context, services) => {

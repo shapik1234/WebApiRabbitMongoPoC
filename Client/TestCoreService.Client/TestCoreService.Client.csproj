@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Api\CustomerApi.Messaging.Send\CustomerApi.Messaging.Send.csproj" />
+    <ProjectReference Include="..\Service.Messaging.Listener\Service.Messaging.Listener.csproj" />
     <ProjectReference Include="..\ServicesShared.Core\ServicesShared.Core.csproj" />
   </ItemGroup>
 
