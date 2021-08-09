@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CustomerApi.Data.Entities
 {
-	public partial class BaseEntity
+	public partial class MongoIdentity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.ObjectId)]

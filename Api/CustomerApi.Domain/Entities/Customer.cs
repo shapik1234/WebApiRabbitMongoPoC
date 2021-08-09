@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CustomerApi.Data.Entities
 {
-    public partial class Customer : BaseEntity
+    public partial class Customer : MongoIdentity
     {       
         public string FirstName { get; set; }
         public string LastName { get; set; }

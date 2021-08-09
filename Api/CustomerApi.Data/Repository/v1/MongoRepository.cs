@@ -9,14 +9,14 @@ using MongoDB.Driver;
 namespace CustomerApi.Data.Repository.v1
 {
     public class MongoRepository<TEntity> : IMongoRepository<TEntity> 
-        where TEntity : BaseEntity, new()
+        where TEntity : Entities.MongoIdentity, new()
     {
         protected readonly IMongoContext<TEntity> mongoContext;
         private IMongoCollection<TEntity> collection;
         public MongoRepository(IMongoContext<TEntity> context)
         {
-            mongoContext = context;
-            collection = context.GetCollection<TEntity>();
+            //mongoContext = context;
+            //collection = context.GetCollection<TEntity>();
         }       
 
         public async Task<List<TEntity>> Get(CancellationToken cancellationToken = default)

@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CustomerApi.Authentication\CustomerApi.Authentication.csproj" />
     <ProjectReference Include="..\CustomerApi.Data\CustomerApi.Data.csproj" />
     <ProjectReference Include="..\CustomerApi.Messaging.Send\CustomerApi.Messaging.Send.csproj" />
   </ItemGroup>

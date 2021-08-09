@@ -1,3 +1,6 @@
+using CustomerApi.Authentication.Models.v1;
+using CustomerApi.Authentication.Options.v1;
+using CustomerApi.Authentication.Services.v1;
 using CustomerApi.Data;
 using CustomerApi.Data.Database;
 using CustomerApi.Data.Entities;
@@ -5,6 +8,7 @@ using CustomerApi.Data.Options;
 using CustomerApi.Data.Repository.v1;
 using CustomerApi.Messaging.Send.Options.v1;
 using CustomerApi.Messaging.Send.Sender.v1;
+using CustomerApi.Middlewares;
 using CustomerApi.Service.v1.Command;
 using CustomerApi.Service.v1.Query;
 using MediatR;
@@ -79,21 +83,24 @@ namespace CustomerApi
 					return new BadRequestObjectResult(actionContext.ModelState);
 				};
 			});
-
-			services.AddAutoMapper(typeof(Startup));
+			//messaging service
 			services.Configure<RabbitMqConfiguration>(Configuration.GetSection(nameof(RabbitMqConfiguration)));
-
 			bool.TryParse(Configuration["BaseServiceSettings:UserabbitMq"], out var useRabbitMq);
 			if (useRabbitMq)
 			{
 				services.AddSingleton<ICustomerUpdateSender, CustomerUpdateSender>();
 			}
-
+			//autentication service
+			services.Configure<AuthenticationServiceConfiguration>(Configuration.GetSection(nameof(AuthenticationServiceConfiguration)));
+			services.AddSingleton<IUserAuthenticationService, UserAuthenticationService>();
+			//mongo database service
 			services.Configure<MongoDatabaseConfiguration>(Configuration.GetSection(nameof(MongoDatabaseConfiguration)));
 			services.AddSingleton(typeof(CustomerContext));
 			services.AddSingleton<ICustomerRepository, CustomerRepository>();
-
+			//patterns
+			services.AddAutoMapper(typeof(Startup));
 			services.AddMediatR(Assembly.GetExecutingAssembly());
+			services.AddTransient<IRequestHandler<AuthenticateUserCommand, AuthenticateResponseModel>, AuthenticateUserCommandHandler>();
 			services.AddTransient<IRequestHandler<CreateCustomerCommand, Customer>, CreateCustomerCommandHandler>();
 			services.AddTransient<IRequestHandler<UpdateCustomerCommand, Customer>, UpdateCustomerCommandHandler>();
 			services.AddTransient<IRequestHandler<GetCustomerByIdQuery, Customer>, GetCustomerByIdQueryHandler>();
@@ -119,7 +126,10 @@ namespace CustomerApi
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Customer API V1");
 				c.RoutePrefix = string.Empty;
 			});
-			app.UseRouting();
+			app.UseRouting();			
+
+			// custom jwt auth middleware
+			app.UseMiddleware<JwtMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{
