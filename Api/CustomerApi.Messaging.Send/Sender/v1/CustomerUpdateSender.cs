@@ -32,7 +32,7 @@ namespace CustomerApi.Messaging.Send.Sender.v1
             {
                 using (var channel = _connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                    channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
                     var json = JsonConvert.SerializeObject(customer);
                     var body = Encoding.UTF8.GetBytes(json);

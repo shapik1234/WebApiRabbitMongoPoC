@@ -23,11 +23,11 @@ namespace TestCoreService.Client.Implementation.Handlers
 			{
 				IError error = null;
 
+				customerListener.ListenCustomer(m => Log.Information(m));
+
 				do
 				{
 					//add action to do
-					customerListener.ListenCustomer(m => Log.Information(m));
-
 				} while (!CancellationToken.IsCancellationRequested);
 			}
 			catch (OperationCanceledException)
