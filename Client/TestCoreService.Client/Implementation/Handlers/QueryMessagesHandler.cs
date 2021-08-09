@@ -2,16 +2,17 @@
 using ServicesShared.Core;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace TestCoreService.Client.Implementation.Handlers
 {
 	internal class QueryMessagesHandler : BaseHandler
 	{
-		private readonly ICustomerListener customerListener;
+		private readonly IConsumer customerListener;
 		public QueryMessagesHandler(
 		   CancellationTokenSource cancellationToken,
 		   ILoggerHandler log,
-		   ICustomerListener customerMessagingListener)
+		   IConsumer customerMessagingListener)
 			: base(cancellationToken, log)
 		{
 			this.customerListener = customerMessagingListener;
@@ -22,12 +23,13 @@ namespace TestCoreService.Client.Implementation.Handlers
 			try
 			{
 				IError error = null;
+				Log.Information("Message Query Handler Client is working...");
 
-				customerListener.ListenCustomer(m => Log.Information(m));
-
+				customerListener.Listen(m => Log.Information(m));
 				do
 				{
-					//add action to do
+					var now = DateTime.Now;
+					Idle(now, now, 2, nameof(QueryMessagesHandler));
 				} while (!CancellationToken.IsCancellationRequested);
 			}
 			catch (OperationCanceledException)
@@ -39,6 +41,10 @@ namespace TestCoreService.Client.Implementation.Handlers
 			{
 				Log.Error(HandleException(exception).Description);
 				CancellationToken.Cancel();
+			}
+			finally
+			{
+				customerListener?.Dispose();
 			}
 		}
 

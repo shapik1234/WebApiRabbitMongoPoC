@@ -94,15 +94,16 @@ namespace CustomerApi.Controllers.v1
         {
             try
             {
-                var customer = await mediator.Send(new GetCustomerByIdQuery
-                {
-                    Id = updateCustomerModel.Id
-                });
+                var customer = new Customer();
+                //var customer = await mediator.Send(new GetCustomerByIdQuery
+                //{
+                //    Id = updateCustomerModel.Id
+                //});
 
-                if (customer == null)
-                {
-                    return BadRequest($"No customer found with the id {updateCustomerModel.Id}");
-                }
+                //if (customer == null)
+                //{
+                //    return BadRequest($"No customer found with the id {updateCustomerModel.Id}");
+                //}
 
                 return await mediator.Send(new UpdateCustomerCommand
                 {

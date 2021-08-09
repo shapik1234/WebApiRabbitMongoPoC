@@ -12,9 +12,9 @@ namespace TestCoreService.Client
     public class ServiceInstance : IWindowsService
     {
         private CancellationTokenSource cancellationToken;
-        private readonly ICustomerListener customerListener;
+        private readonly IConsumer customerListener;
 
-        public ServiceInstance(ICustomerListener customerListener, ILoggerHandler log)
+        public ServiceInstance(IConsumer customerListener, ILoggerHandler log)
         {            
             this.Log = log;
             this.customerListener = customerListener;

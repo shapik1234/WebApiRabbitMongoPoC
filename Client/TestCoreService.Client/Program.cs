@@ -54,7 +54,7 @@ namespace TestCoreService.Client
 							bool.TryParse(configRoot["BaseServiceSettings:UserabbitMq"], out var useRabbitMq);
 							if (useRabbitMq)
 							{
-								services.AddSingleton<ICustomerListener, CustomerListener>();
+								services.AddSingleton<IConsumer, Consumer>();
 							}
 
 							services.AddSingleton((ILogger)serilizeLogger);

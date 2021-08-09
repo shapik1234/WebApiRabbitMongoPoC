@@ -35,7 +35,7 @@ namespace TestCoreService.Client.Implementation.Handlers
         {
             Log.Debug($"{kindOfProcess}s processing ended at {now:HH:mm:ss}");
 
-            DateTime nextIteration = now.AddMinutes(duration);
+            DateTime nextIteration = now.AddSeconds(duration);
             TimeSpan timeDifference = nextIteration - now;
 
             if (timeDifference.TotalMilliseconds > 0)
