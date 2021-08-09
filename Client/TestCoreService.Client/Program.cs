@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CustomerApi.Messaging.Send.Listener.v1;
+using CustomerApi.Messaging.Send.Options.v1;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using ServicesShared.Core;
 using System;
+using System.Configuration;
 using System.IO;
 
 namespace TestCoreService.Client
@@ -35,9 +38,10 @@ namespace TestCoreService.Client
 			var builder = new ConfigurationBuilder();
 			BuildConfig(builder);
 
+			var configRoot = builder.Build();
 			// Specifying the configuration for serilog
 			var serilizeLogger = new LoggerConfiguration() 
-							.ReadFrom.Configuration(builder.Build()) // connect serilog to our configuration folder
+							.ReadFrom.Configuration(configRoot) // connect serilog to our configuration folder
 							.Enrich.FromLogContext() 
 							.WriteTo.Console()
 							.CreateLogger(); 
@@ -46,6 +50,15 @@ namespace TestCoreService.Client
 
 			var host = Host.CreateDefaultBuilder() 
 						.ConfigureServices((context, services) => {
+
+							//messaging service
+							services.Configure<RabbitMqConfiguration>(configRoot.GetSection(nameof(RabbitMqConfiguration)));
+							bool.TryParse(configRoot["BaseServiceSettings:UserabbitMq"], out var useRabbitMq);
+							if (useRabbitMq)
+							{
+								services.AddSingleton<ICustomerListener, CustomerListener>();
+							}
+
 							services.AddSingleton((ILogger)serilizeLogger);
 							services.AddSingleton<ILoggerHandler, LoggerHandler>();
 							services.AddSingleton<IServiceSettings<IHandlingParameters>, ServiceSettings>();							

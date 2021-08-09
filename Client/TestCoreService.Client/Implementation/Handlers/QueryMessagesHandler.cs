@@ -1,4 +1,5 @@
-﻿using ServicesShared.Core;
+﻿using CustomerApi.Messaging.Send.Listener.v1;
+using ServicesShared.Core;
 using System;
 using System.Threading;
 
@@ -6,13 +7,15 @@ namespace TestCoreService.Client.Implementation.Handlers
 {
 	internal class QueryMessagesHandler : BaseHandler
 	{
+		private readonly ICustomerListener customerListener;
 		public QueryMessagesHandler(
 		   CancellationTokenSource cancellationToken,
 		   ILoggerHandler log,
-		   IHandlingParameters handlingParameters)
+		   IHandlingParameters handlingParameters,
+		   ICustomerListener customerMessagingListener)
 			: base(cancellationToken, log, handlingParameters)
 		{
-
+			this.customerListener = customerMessagingListener;
 		}
 
 		public override void Start()
@@ -23,6 +26,8 @@ namespace TestCoreService.Client.Implementation.Handlers
 
 				do
 				{
+					//add action to do
+					customerListener.ListenCustomer(m => Log.Information(m));
 
 				} while (!CancellationToken.IsCancellationRequested);
 			}

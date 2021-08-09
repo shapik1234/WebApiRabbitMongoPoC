@@ -71,10 +71,5 @@ namespace CustomerApi.Messaging.Send.Sender.v1
 
             return _connection != null;
         }
-
-        public void Dispose()
-        {
-            _connection?.Dispose();
-        }
     }
 }

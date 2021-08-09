@@ -5,10 +5,11 @@ using CustomerApi.Messaging.Send.Options.v1;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
-namespace CustomerApi.Messaging.Send.Sender.v1
+namespace CustomerApi.Messaging.Send.Listener.v1
 {
-    public class CustomerUpdateSender : ICustomerUpdateSender
+    public class CustomerListener : ICustomerListener
     {
         private readonly string _hostname;
         private readonly string _password;
@@ -16,7 +17,7 @@ namespace CustomerApi.Messaging.Send.Sender.v1
         private readonly string _username;
         private IConnection _connection;
 
-        public CustomerUpdateSender(IOptions<RabbitMqConfiguration> rabbitMqOptions)
+        public CustomerListener(IOptions<RabbitMqConfiguration> rabbitMqOptions)
         {
             _queueName = rabbitMqOptions.Value.QueueName;
             _hostname = rabbitMqOptions.Value.Hostname;
@@ -26,7 +27,7 @@ namespace CustomerApi.Messaging.Send.Sender.v1
             CreateConnection();
         }
 
-        public void SendCustomer(Customer customer)
+        public void ListenCustomer(Action<string> action)
         {
             if (ConnectionExists())
             {
@@ -34,14 +35,19 @@ namespace CustomerApi.Messaging.Send.Sender.v1
                 {
                     channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-                    var json = JsonConvert.SerializeObject(customer);
-                    var body = Encoding.UTF8.GetBytes(json);
+                    var consumer = new EventingBasicConsumer(channel);
 
-                    channel.BasicPublish(exchange: "", routingKey: _queueName, basicProperties: null, body: body);
+                    consumer.Received += (sender, e) => {
+                        var body = e.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(body);
+                        action?.Invoke(message);
+                    };
+
+                    channel.BasicConsume(_queueName, true, consumer);
                 }
             }
-        }
-
+        }  
+   
         private void CreateConnection()
         {
             try

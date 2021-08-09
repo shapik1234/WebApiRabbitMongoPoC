@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
+using CustomerApi.Messaging.Send.Listener.v1;
 using ServicesShared.Core;
 using TestCoreService.Client.Implementation.Handlers;
 
@@ -13,11 +13,13 @@ namespace TestCoreService.Client
     {
         private CancellationTokenSource cancellationToken;
         private readonly IHandlingParameters handlingParameters;
+        private readonly ICustomerListener customerListener;
 
-        public ServiceInstance(IHandlingParameters handlingParameters, ILoggerHandler log)
+        public ServiceInstance(IHandlingParameters handlingParameters, ICustomerListener customerListener, ILoggerHandler log)
         {            
             this.handlingParameters = handlingParameters;
             this.Log = log;
+            this.customerListener = customerListener;
         }
 
         #region Properties
@@ -51,7 +53,7 @@ namespace TestCoreService.Client
             {           
                 Task.Factory
                     .StartNew(
-                        new QueryMessagesHandler(cancellationToken, Log, handlingParameters).Start,
+                        new QueryMessagesHandler(cancellationToken, Log, handlingParameters, customerListener).Start,
                         TaskCreationOptions.LongRunning);
             }
             catch (OperationCanceledException)

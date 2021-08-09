@@ -1,9 +1,8 @@
 ﻿using CustomerApi.Data.Entities;
-using System;
 
 namespace CustomerApi.Messaging.Send.Sender.v1
 {
-    public interface ICustomerUpdateSender : IDisposable
+    public interface ICustomerListener
     {
         void SendCustomer(Customer customer);
     }
